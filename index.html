@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet"
+    href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Fones de Ouvidos</title>
+    <style>
+        /* Estilos adicionados */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .tab {
+            display: none;
+            overflow-y: auto;
+            max-height: calc(100% - 70px); /* altura máxima menos a altura do cabeçalho */
+            width: 100%;
+        }
+
+        .item-carrinho {
+            margin-bottom: 10px; /* Adiciona um espaçamento entre os itens do carrinho */
+        }
+
+        .item-carrinho img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        #carrinho-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: calc(100% - 120px); /* altura da tela menos a altura do cabeçalho e um espaço adicional */
+            padding-top: 80px; /* Espaçamento superior aumentado */
+        }
+
+        .tab-content {
+            overflow-y: auto;
+            max-height: calc(100% - 70px); /* altura máxima menos a altura do cabeçalho */
+            width: 100%;
+        }
+
+        .item-carrinho {
+            margin-bottom: 10px; /* Adiciona um espaçamento entre os itens do carrinho */
+        }
+
+        .item-carrinho img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo"><i class='bx bx-headphone'></i>Soundbox</a>
+
+        <ul class="navegação">
+            <li><a href="#" class="tab-link" onclick="openTab('home-tab')"><i class='bx bx-home'></i>Visão geral</a></li>
+            <li><a href="#" class="tab-link" onclick="openTab('menu-tab')"><i class='bx bx-info-circle'></i>Teach Specs</a></li>
+            <li><a href="#" class="tab-link" onclick="openTab('menu-tab')"><i class='bx bx-star'></i>Reviews</a></li>
+            <li><a href="#" class="tab-link" onclick="openTab('menu-tab')"><i class='bx bx-envelope'></i>Contact Us</a></li>
+           
+        </ul><!--navegação-->
+
+        <div class="header-icons">
+            <a href="#" class="cart-tab" onclick="openTab('carrinho-tab')"><i class='bx bx-cart'></i></a>
+            <a href="#" class="menu-tab" onclick="openTab('menu-tab')"><i class='bx bx-menu'></i></a>
+        </div><!--header-icons-->
+    </header>
+
+    <section id="home-tab" class="tab" style="display: block;">
+        <!-- Conteúdo da página inicial -->
+        <div class="home">
+            <div class="home-img">
+                <img src="product1.png" class="one">
+            </div><!--home-img-->
+
+            <div class="home-text">
+                <h1>Wireless <br> Headphones</h1>
+                <h5>The smarter way to listen</h5>
+                <h3>$199.00</h3>
+                <button onclick="adicionarAoCarrinho('product1.png', 'Wireless Headphones', 199)" class="btn">Adicionar ao Carrinho</button>
+            </div><!--home-text-->
+        </div><!--home-->
+
+        <div class="main">
+            <div class="row">
+                <li><img src="main1.png" onclick="slider('product1.png')"></li>
+            </div><!--row-->
+
+            <div class="row2">
+                <li><img src="main2.png" onclick="slider('product2.png')"></li>
+            </div><!--row2-->
+
+            <div class="row3">
+                <li><img src="main3.png" onclick="slider('product3.png')"></li>
+            </div><!--row3-->
+        </div><!--main-->
+    </section>
+
+    <div id="carrinho-tab" class="tab" style="display: none;">
+        <!-- Conteúdo do carrinho -->
+        <h2>Carrinho</h2>
+        <div id="carrinho-itens"></div>
+        <p><strong>Total: $<span id="total-carrinho">0.00</span></strong></p>
+        <button onclick="finalizarCompra()" class="btn-finalizar">Finalizar Compra</button>
+    </div>
+
+    <div id="menu-tab" class="tab" style="display: none;">
+        <!-- Conteúdo do menu -->
+        <!-- Adicione aqui o conteúdo do seu menu -->
+    </div>
+
+    <script>
+        function slider(anything) {
+            document.querySelector('.one').src = anything;
+        };
+
+        function openTab(tabName) {
+            var tabs = document.querySelectorAll('.tab');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = "none";
+            }
+            document.getElementById(tabName).style.display = "block";
+        }
+
+        function adicionarAoCarrinho(imagem, nome, preco) {
+            var itemHtml = "<div class='item-carrinho'><img src='" + imagem + "'><h3>" + nome + "</h3><p>$" + preco + "</p><button onclick='removerItem(this)' class='btn-remover'>Remover</button></div>";
+            document.getElementById("carrinho-itens").innerHTML += itemHtml;
+            atualizarTotal(preco);
+        }
+
+        function removerItem(button) {
+            var item = button.parentNode;
+            var preco = parseFloat(item.querySelector('p').innerText.substring(1));
+            item.remove();
+            atualizarTotal(-preco);
+        }
+
+        function atualizarTotal(preco) {
+            var totalAtual = parseFloat(document.getElementById("total-carrinho").innerText);
+            var novoTotal = totalAtual + preco;
+            document.getElementById("total-carrinho").innerText = novoTotal.toFixed(2);
+        }
+    </script>
+</body>
+</html>
+
